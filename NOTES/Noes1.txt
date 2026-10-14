@@ -1,0 +1,83 @@
+What is MongoDB?
+    MongoDB is an open-source, NoSQL, document-oriented database that stores data in flexible, 
+    JSON-like documents using BSON (Binary JSON) internally. Unlike relational databases that 
+    store data in tables and rows, MongoDB organizes data into collections and documents. It 
+    supports CRUD operations and is commonly used in modern web applications.
+
+What is Nosql?
+    NoSQL stands for “Not Only SQL.” It refers to databases that use non-relational data models, 
+    such as documents, key-value pairs, graphs, and columns. They are commonly used when applications 
+    need flexible data structures and scalability. MongoDB is an example of a NoSQL database.
+
+SQL vs NoSQL :
+                        SQL	                                        NoSQL
+                Stores data in tables	                Uses documents, key-value pairs, graphs, or other models
+                Typically uses a predefined schema	    Often supports flexible schemas
+                Uses SQL to query data	                Query methods depend on the database
+                Example: MySQL, PostgreSQL	            Example: MongoDB, Cassandra
+                                
+MongoDB vs MySQL
+                    MongoDB	                                        MySQL
+            NoSQL document database	                            Relational SQL database
+            Stores data in documents	                        Stores data in tables
+            Organizes documents into collections	            Organizes rows into tables
+            Supports flexible document structures	            Uses defined table schemas
+            Queries use MongoDB's query language	            Queries primarily use SQL
+            Supports embedded documents and arrays	            Supports relationships using foreign keys and joins
+            Example: product catalogs with varying attributes	Example: banking systems with structured relationships
+
+Advantages and disadvantages of MongoDB :
+Advantages
+    1. Flexible schema: Documents can have different fields, making it easier to adapt to changing requirements.
+    2. Easy to store complex data: Supports arrays and nested objects within documents.
+    3. Scalability: Supports horizontal scaling using sharding.
+    4. High availability: Replica sets help maintain availability when a database server fails.
+    5. Powerful queries: Supports filtering, sorting, indexing, and aggregation.
+    6. Developer-friendly: Its JSON-like document structure is familiar to JavaScript developers.
+Disadvantages
+    1. Data duplication: Embedded or duplicated data can increase storage and make updates more complicated.
+    2. Relationships can be complex: Applications with many interconnected relationships may require careful document design and additional queries.
+    3. Memory and storage usage: Poor schema design and missing indexes can lead to inefficient resource usage.
+    4. Not ideal for every application: Some highly relational workloads may be more naturally modeled using relational databases.
+    5. Flexible schema needs discipline: Without proper validation, inconsistent documents can cause application errors.
+
+Features of MongoDB :
+    1. Document-oriented: Stores data as BSON documents.
+    2. Flexible schema: Documents in the same collection can have different fields.
+    3. Indexing: Improves the speed of data retrieval.
+    4. Replication: Replica sets maintain multiple copies of data for high availability.
+    5. Sharding: Distributes data across multiple servers to support horizontal scaling.
+    6. Aggregation: Processes and transforms data to generate useful results.
+    7. CRUD operations: Supports Create, Read, Update, and Delete operations.
+    8. High availability: Can elect a new primary when the existing primary fails.
+    9. Transaction support: Supports multi-document ACID transactions.
+    10. Rich query capabilities: Supports filtering, sorting, projections, and queries on nested fields and arrays.
+
+ MongoDB use cases :
+    1. E-commerce applications: Stores product details, customer information, shopping carts, and orders.
+    2. Social media applications: Stores user profiles, posts, comments, and reactions.
+    3. Content management systems (CMS): Stores articles, blogs, and website content.
+    4. Real-time applications: Stores application events, activity data, and messages.
+    5. Internet of Things (IoT): Stores data collected from sensors and connected devices.
+    6. Gaming applications: Stores player profiles, game settings, and progress.
+    7. Location-based applications: Stores geographical data and supports location-based queries.
+    8. Log management: Stores application logs and event records for analysis.
+
+MongoDB architecture basics :
+The main components are:
+    1. Database: Contains collections.
+    2. Collection: Contains related documents.
+    3. Document: Stores data as field-value pairs in BSON format.
+    4. MongoDB Server (mongod): The database server process that manages data storage and database operations.
+    5. MongoDB Shell (mongosh): A command-line interface used to interact with MongoDB.
+    6. Replica Set: Maintains multiple copies of data to provide high availability.
+    7. Sharding: Distributes data across multiple servers to support horizontal scaling.
+
+                    How it works
+                    Application
+                    React / Node.js
+
+                    MongoDB Server (mongod)
+                    Processes queries and manages data
+
+                    Database → Collection → Documents

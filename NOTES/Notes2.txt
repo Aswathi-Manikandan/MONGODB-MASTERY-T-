@@ -1,0 +1,112 @@
+Database, collection, and document :
+
+1. Database
+    A database is a container that holds collections related to an application.
+    Example: ecommerce
+2. Collection
+    A collection is a group of related documents inside a database. It is similar to a table in MySQL.
+    Example: products
+3. Document
+    A document is an individual record stored inside a collection. It contains field-value pairs in BSON format.
+
+JSON vs BSON :
+    JSON (JavaScript Object Notation) is a text-based format used to represent and exchange data between applications.
+    
+    JSON data types
+    JSON supports six categories of values:
+                Data type	                    Example
+
+                String	                        "name": "Arun"
+                Number	                        "age": 22
+                Boolean	                        "isStudent": true
+                Null	                        "address": null
+                Object	                        "address": {"city": "Kochi"}
+                Array	                        "skills": ["JS", "React"]
+
+                ===> Important: JSON does not have native Date, ObjectId, or separate integer and floating-point types. 
+                JSON numbers are simply numbers in the JSON data model.
+What is BSON?
+    BSON (Binary JSON) is a binary-encoded serialization format that MongoDB uses to represent documents.
+
+    BSON data types
+
+        BSON type	          Example	                    Purpose
+        String	           "name": "Arun"	                Stores text
+        Double	           "price": 99.5	                Stores floating-point numbers
+        Int32	            NumberInt(22)	                Stores a 32-bit integer
+        Int64	            NumberLong("9000000000")	    Stores a 64-bit integer
+        Boolean	            "active": true	                Stores true or false
+        Null	            "value": null	                Represents a null value
+        Array	            "skills": ["JS", "React"]	    Stores a list of values
+        Object	            "address": { "city": "Kochi" }	Stores nested documents
+        Date	            new Date()	                    Stores a date and time
+        ObjectId	        ObjectId()	                    Commonly used as a document identifier
+        Binary	            Binary data	                    Stores binary content
+        Timestamp	        BSON Timestamp	                Used for internal database operations, including replication-related purposes
+        Decimal128	        NumberDecimal("99.99")	        Represents decimal values with high precision
+
+How JSON and BSON work together
+    Imagine a MERN application.
+        1. React sends product data to the backend as JSON.
+        2. Node.js and Express process the request.
+        3. The MongoDB driver communicates with the database using MongoDB's wire protocol and BSON encoding.
+        4. MongoDB stores the document internally in BSON format.
+        5. When retrieving data, the driver converts the result into JavaScript values that the backend can work with.
+        6. Express commonly returns JSON to React.
+        Remember that JSON and BSON are different formats, and the MongoDB driver handles much of the conversion for you.
+    
+_id field :
+    The _id field is a unique identifier for each document in a MongoDB collection. MongoDB automatically generates an _id value 
+    if you don't provide one when inserting a document.
+
+What is ObjectId? :
+    ObjectId is a BSON data type commonly used for MongoDB document identifiers.
+    An ObjectId is 12 bytes long and contains:
+    - A 4-byte timestamp component.
+    - A 5-byte random component.
+    - A 3-byte counter.
+    Example:
+    ObjectId("507f1f77bcf86cd799439011")
+
+Schema-less vs flexible schema :
+1. What is a schema?
+    A schema defines the structure of data, such as which fields a document should contain and what types of values those fields should store.
+    For example, a user schema might define name as a string and age as a number.
+2. What is schema-less?
+    Schema-less means the database does not require every document to follow a fixed structure by default.
+    Example:
+    // Document 1
+    {
+    name: "Arun",
+    age: 22
+    }
+
+    // Document 2
+    {
+    name: "Priya",
+    skills: ["React", "Node.js"]
+    }
+
+
+    Both documents can exist in the same MongoDB collection even though their fields differ.
+
+What is flexible schema?
+    A flexible schema means documents can have different fields and structures, while the application can still define and enforce rules when needed.
+    Example:
+    // Document 1
+    {
+    name: "Arun",
+    age: 22
+    }
+
+    // Document 2
+    {
+    name: "Priya",
+    age: 25,
+    city: "Kochi"
+    }
+
+
+    Both documents have name, but the second document has additional fields.
+    You can also use schema validation in MongoDB to require fields, restrict data types, or enforce other rules.
+
