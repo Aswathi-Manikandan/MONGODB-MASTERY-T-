@@ -1,0 +1,53 @@
+INDEX :
+    An index in MongoDB is a special data structure that helps MongoDB find documents faster 
+    without scanning every document in a collection.
+    
+2. Syntax to create an index
+    db.orders.createIndex({ "customer.city": 1 })
+
+
+    - createIndex() creates an index.
+    - "customer.city" is the field to index.
+    - 1 means ascending index order.
+    - -1 means descending index order.
+    Example query that can benefit from this index:
+    db.orders.find({ "customer.city": "Kochi" })
+
+3. Types of indexes
+        Indextype	                Purpose
+        Single-field	        Index one field
+        Compound	            Index multiple fields
+        Multikey	            Index values inside arrays
+        Text	                Search text content
+        Geospatial	            Search by location
+        Unique	                Prevent duplicate indexed values
+    
+Example of a compound index:
+    db.orders.createIndex({
+    orderStatus: 1,
+    totalAmount: -1
+    })
+
+
+    This can help queries that filter by orderStatus and sort by totalAmount, depending on the query and index usage.
+
+How to view and delete indexes
+    View indexes:
+    db.orders.getIndexes()
+
+
+    Delete a specific index:
+    db.orders.dropIndex("customer.city_1")
+
+
+    The index name shown here is MongoDB's usual default name for the index created on customer.city in ascending order.
+
+Advantages and disadvantages
+    Advantages
+        - Faster queries when a suitable index exists.
+        - Can improve sorting and filtering performance.
+        - Unique indexes can enforce uniqueness.
+    Disadvantages
+        - Require additional storage.
+        - Inserts, updates, and deletes can become slower because indexes must also be maintained.
+        - Too many unnecessary indexes waste resources.

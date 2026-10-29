@@ -1,0 +1,173 @@
+Update Operators — Array Operators :
+    1. $push
+        Purpose: Adds an element to an array.
+
+        Syntax
+        { $push: { field: value } }
+
+
+        Example
+        db.students.updateOne(
+        { name: "Arun" },
+        { $push: { skills: "React" } }
+        )
+
+
+    2. $pop
+        Purpose: Removes the first or last array element.
+
+        Syntax
+        { $pop: { field: 1 } }  // Last element
+        { $pop: { field: -1 } } // First element
+
+
+        Example
+        db.students.updateOne(
+        { name: "Arun" },
+        { $pop: { skills: 1 } }
+        )
+
+
+    3. $pull
+        Purpose: Removes all array elements matching a value or condition.
+
+        Syntax
+        { $pull: { field: value } }
+
+
+        Example
+        db.students.updateOne(
+        { name: "Arun" },
+        { $pull: { skills: "React" } }
+        )
+
+
+    4. $pullAll
+        Purpose: Removes all occurrences of specified values from an array.
+
+        Syntax
+        { $pullAll: { field: [value1, value2] } }
+
+
+        Example
+        db.students.updateOne(
+        { name: "Arun" },
+        { $pullAll: { skills: ["React", "Node.js"] } }
+        )
+
+
+    5. $addToSet
+        Purpose: Adds an element only if it is not already present.
+
+        Syntax
+        { $addToSet: { field: value } }
+
+
+        Example
+        db.students.updateOne(
+        { name: "Arun" },
+        { $addToSet: { skills: "React" } }
+        )
+
+
+    6. $each
+        Purpose: Adds multiple elements using $push or $addToSet.
+
+        Syntax
+        { $push: { field: { $each: [value1, value2] } } }
+
+
+        Example
+        db.students.updateOne(
+        { name: "Arun" },
+        { $push: { skills: { $each: ["React", "Node.js"] } } }
+        )
+
+
+    7. $position
+Purpose: Specifies where new elements are inserted in an array when using $push with $each.
+
+        Syntax
+        {
+        $push: {
+            field: {
+            $each: [value],
+            $position: index
+            }
+        }
+        }
+
+
+        Example
+        db.students.updateOne(
+        { name: "Arun" },
+        {
+            $push: {
+            skills: {
+                $each: ["React"],
+                $position: 0
+            }
+            }
+        }
+        )
+
+
+        Inserts "React" at the beginning of the array.
+    8. $slice
+        Purpose: Limits the number of array elements retained when used with $push and $each.
+
+        Syntax
+        {
+        $push: {
+            field: {
+            $each: [value],
+            $slice: number
+            }
+        }
+        }
+
+
+        Example
+        db.students.updateOne(
+        { name: "Arun" },
+        {
+            $push: {
+            scores: {
+                $each: [90],
+                $slice: -3
+            }
+            }
+        }
+        )
+
+
+        Keeps only the last 3 elements in scores.
+            9. $sort
+        Purpose: Sorts array elements when used with $push and $each.
+
+        Syntax
+        {
+        $push: {
+            field: {
+            $each: [value],
+            $sort: 1
+            }
+        }
+        }
+
+
+        Example
+        db.students.updateOne(
+        { name: "Arun" },
+        {
+            $push: {
+            scores: {
+                $each: [85, 95],
+                $sort: 1
+            }
+            }
+        }
+        )
+
+
+        Sorts the scores array in ascending order. Use -1 for descending order.

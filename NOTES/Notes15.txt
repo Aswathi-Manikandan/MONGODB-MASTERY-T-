@@ -1,0 +1,137 @@
+1. What is sharding?
+    Sharding is a technique in MongoDB used to distribute a large collection's data across multiple servers.
+    Each server stores only a portion of the data. These portions are called shards.
+
+    Sharding means splitting a large collection's data across multiple servers instead of storing all the 
+    data on one server.
+
+    Imagine your ecommerceDB.orders collection contains 100 million orders.
+
+    If all 100 million orders are stored on one server, that server must handle all the storage requirements 
+    and database operations. As your application grows, that server might not have enough resources.
+
+    MongoDB solves this problem using sharding. It distributes the collection's data across multiple 
+    servers called shards.
+
+    For example, one shard might store some orders, another shard might store other orders, and a third 
+    shard might store the remaining orders.
+
+    When your application requests an order, MongoDB determines which shard should handle the request.
+
+
+2. Horizontal scaling vs vertical scaling
+These are two ways to increase a system's capacity.
+Vertical scaling
+Vertical scaling means increasing the resources of an existing server.
+
+For example, suppose your MongoDB server has 8 GB of RAM. As your application grows, you 
+upgrade it to 32 GB of RAM and provide more CPU resources.
+
+You are making the same server more powerful.
+
+The limitation is that a single machine has finite resources, and upgrades can become expensive.
+Horizontal scaling
+Horizontal scaling means adding more servers to distribute the workload.
+
+For example, instead of upgrading one server to handle all your orders, you add multiple servers and 
+distribute the orders across them using sharding.
+
+Now several servers contribute to storing and processing the data.
+When would you use them?
+If your application is small and one server can comfortably handle its workload, vertical 
+scaling may be sufficient. If the application grows beyond what one server can reasonably handle, 
+horizontal scaling through sharding may be appropriate.
+
+Interview point: Vertical scaling means scale up; horizontal scaling means scale out.
+3. Sharded cluster architecture
+A sharded cluster is the complete MongoDB setup that makes sharding work. It has three main 
+components: shards, config servers, and mongos.
+
+Let's understand how they work together using your e-commerce application.
+
+Suppose a customer places an order through your Node.js and Express.js application.
+
+Step 1: The application sends a request.
+
+Your backend sends the database operation to MongoDB through mongos, the query router.
+
+Step 2: mongos determines where the data belongs.
+
+It uses the shard key and cluster metadata to determine which shard or shards need to handle the operation.
+
+Step 3: The appropriate shard processes the operation.
+
+The shard stores or retrieves the relevant order data and returns the result.
+
+Step 4: The result returns to the application.
+
+mongos sends the result back to your backend, which can then return a response to the customer.
+
+The config servers support this process by maintaining the metadata that describes the cluster and 
+its data distribution.
+
+So, the three components have different responsibilities:
+- Shards: store the actual application data.
+- Config servers: maintain cluster metadata.
+- mongos: route database requests.
+4. Shards
+A shard is one of the servers or database components that stores a portion of a sharded collection.
+
+For example, suppose your orders collection contains one million documents. MongoDB might 
+distribute those documents across three shards.
+
+Each shard stores only its assigned portion of the sharded collection, rather than every document in the collection.
+
+When you add more shards, MongoDB can redistribute data to use the additional capacity. This process 
+is managed by MongoDB's balancing mechanisms, subject to the cluster's configuration and constraints.
+
+An important point: in a production environment, a shard is commonly configured as a replica set. 
+That means the shard itself can have a primary and secondary members to help provide availability.
+
+Remember: A shard stores data. A replica set helps protect that data against individual member failures.
+5. Config servers
+Config servers store information about how the sharded cluster is organized.
+
+They do not normally store your application's orders as the primary data store. Your orders are 
+stored on the shards.
+
+Consider this situation: a customer requests order ORD1005.
+
+MongoDB needs to determine which shard is responsible for that order. The config-server metadata 
+provides information about the cluster's shards and how the collection's data is distributed.
+
+mongos uses this information to route the request appropriately.
+
+Config servers maintain information such as:
+- Which shards belong to the cluster.
+- Which collections are sharded.
+- How data partitions, called chunks, are distributed among shards.
+Config servers are typically deployed as a replica set for availability.
+
+Remember: Config servers maintain the cluster's metadata, not the main collection of customer orders.
+6. mongos
+mongos is the query router that connects your application to the correct shards.
+
+Your Node.js application does not need to manually decide which shard stores each order. It sends its 
+database operations through mongos.
+
+Consider this query:
+db.orders.find({ orderId: "ORD1005" });
+
+
+When the query reaches mongos, it checks the query and shard-key information.
+
+If the query contains sufficient information to identify one shard, mongos can send the request directly to 
+that shard. If the query cannot be targeted to a single shard, it may send the request to multiple shards 
+and combine the results.
+
+For example, searching by a suitable shard key can allow a targeted query, while searching by a field 
+unrelated to the shard key may require checking multiple shards.
+
+This distinction matters because contacting fewer shards can reduce unnecessary work.
+
+Remember: mongos routes requests; it is not the primary place where your order documents are stored.
+7. Shard keys
+A shard key is the field, or combination of fields, MongoDB uses to distribute documents across shards.
+
+Choosing the shard key is one of the most important decisions when designing a sharded collection.

@@ -1,0 +1,94 @@
+Aggregation Framework — Advanced Stages
+    1. $lookup — Join collections
+Why use it? To combine related documents from two collections, similar to a SQL JOIN.
+
+Syntax:
+{
+  $lookup: {
+    from: "collectionName",
+    localField: "field1",
+    foreignField: "field2",
+    as: "result"
+  }
+}
+
+
+Example: Suppose an orders document contains customerId and a customers collection also contains customerId.
+db.orders.aggregate([
+  {
+    $lookup: {
+      from: "customers",
+      localField: "customerId",
+      foreignField: "customerId",
+      as: "customerDetails"
+    }
+  }
+])
+
+
+Use case: Retrieve orders along with matching customer details. The matching customer documents appear in an array called customerDetails.
+2. $facet — Multiple pipelines at once
+Why use it? To calculate different summaries from the same input documents in one aggregation.
+
+Syntax:
+{
+  $facet: {
+    result1: [ /* stages */ ],
+    result2: [ /* stages */ ]
+  }
+}
+
+
+Example:
+db.orders.aggregate([
+  {
+    $facet: {
+      highValueOrders: [
+        { $match: { totalAmount: { $gte: 50000 } } }
+      ],
+      orderCount: [
+        { $count: "total" }
+      ]
+    }
+  }
+])
+
+
+Use case: Generate a report containing high-value orders and the total order count. Each facet runs its own pipeline on the input documents.
+3. $bucket — Group values into ranges
+Why use it? To divide numeric or date values into defined ranges.
+
+Syntax:
+{
+  $bucket: {
+    groupBy: "$field",
+    boundaries: [0, 1000, 5000, 10000],
+    default: "Other",
+    output: {
+      count: { $sum: 1 }
+    }
+  }
+}
+
+
+Example:
+db.orders.aggregate([
+  {
+    $bucket: {
+      groupBy: "$totalAmount",
+      boundaries: [0, 10000, 50000, 100000],
+      default: "Other",
+      output: {
+        totalOrders: { $sum: 1 }
+      }
+    }
+  }
+])
+
+
+Use case: Categorize orders into amount ranges:
+- 0–9,999
+- 10,000–49,999
+- 50,000–99,999
+- Other for values outside the defined ranges.
+The lower boundary is included, while the upper boundary is excluded.

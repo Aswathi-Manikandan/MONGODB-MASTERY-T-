@@ -1,0 +1,111 @@
+What is replication? 
+    Replication is the process of maintaining multiple copies of the same data on different 
+    MongoDB servers to improve data availability and provide redundancy.
+
+    MongoDB uses a replica set to achieve replication.
+
+    1. How does replication work?
+    A replica set typically contains three members:
+    Primary
+
+    Receives writes
+
+    Replicates changes
+    Secondary 1
+
+    Copy of data
+
+    Secondary 2
+
+    Copy of data
+
+
+
+    - Primary: Receives write operations.
+    - Secondary: Replicates changes from the primary using the operation log (oplog).
+    - Automatic failover: If the primary becomes unavailable, eligible members can elect a new primary.
+
+1. Primary and Secondary Nodes
+    A node is a MongoDB server that participates in a replica set.
+
+    Primary node
+    - Receives write operations.
+    - Records changes in its oplog.
+    - Replicates operations to secondary members.
+
+    Secondary node
+    - Applies operations from the primary's oplog.
+    - Maintains a copy of the dataset.
+    - Can become primary through an election.
+
+2. Arbiter
+    An arbiter participates in elections but does not store a copy of the dataset.
+
+    Why use it? To help a replica set achieve a voting majority when the number of data-bearing members is even.
+
+3. Oplog (Operation Log)
+    The oplog is a special capped collection that records data-changing operations so secondary members 
+    can replicate them.
+    The primary records the change in its oplog, and secondaries retrieve and apply the operation.
+
+    Why use it? It allows secondaries to keep their data synchronized with the primary.
+
+4. Replication Process
+    The replication process happens in these steps:
+    1. A write operation reaches the primary.
+    2. The primary records the operation in its oplog.
+    3. Secondary members fetch new oplog entries.
+    4. Secondaries apply those operations to their own datasets.
+    5. Members continue replicating new operations.
+    Replication is asynchronous by default, so secondaries may not update immediately.
+
+5. Primary Elections
+    A primary election is the process by which eligible replica-set members choose a new primary.
+
+    An election can happen when:
+    - The current primary fails.
+    - The primary becomes unreachable.
+    - The replica set is reconfigured.
+    - Certain other membership or priority changes occur.
+    MongoDB uses voting and election rules to select an eligible member. A voting majority is required.
+
+    For example, with three voting members, at least two votes are needed for a majority.
+
+6. Heartbeats
+    Heartbeats are periodic messages exchanged between replica-set members to check whether other members are reachable.
+
+    Example:
+    - Secondary members monitor the primary.
+    - If heartbeats stop arriving within the relevant timeout, a member may consider the primary unavailable.
+    - Eligible members can then initiate an election.
+    Heartbeats help members detect failures; they do not themselves transfer data.
+
+7. Automatic Failover
+    Automatic failover means MongoDB can elect a new primary without an administrator manually promoting a secondary.
+
+    Example:
+    1. Primary becomes unavailable.
+    2. Remaining members detect the failure.
+    3. An eligible member wins an election.
+    4. The new primary begins accepting writes.
+    The application may experience a temporary interruption during the election. Failover is automatic, 
+    but it is not instantaneous.
+
+8. Replication Lag
+    Replication lag is the delay between an operation being performed on the primary and that operation being applied on a secondary.
+
+    Example:
+
+    The primary receives a new order at 10:00:00 AM. A secondary applies it at 10:00:03 AM.
+
+    The replication lag is approximately three seconds.
+
+    Causes:
+    - Slow network connections.
+    - High write volume.
+    - Heavy workload on secondary members.
+    - Disk or resource bottlenecks.
+    Problems it can cause:
+    - Secondary reads may return stale data.
+    - A recently written document might not immediately appear on a secondary.
+    - Significant lag can affect recovery and failover outcomes.

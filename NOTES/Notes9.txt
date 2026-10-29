@@ -1,0 +1,262 @@
+What is aggregation? 
+    Aggregation in MongoDB processes documents through a pipeline of stages to filter, group, sort, and calculate data, 
+    producing summarized or transformed results.
+
+    Aggregation Pipeline in MongoDB
+    An aggregation pipeline is a sequence of stages where documents pass through one stage after another to 
+    filter, group, sort, or calculate data.
+    Syntax
+    db.collection.aggregate([
+    { stage1 },
+    { stage2 },
+    { stage3 }
+    ])
+
+
+
+    1. $match — Filter documents
+        Why: To select only documents that satisfy a condition, reducing the data processed by later stages.
+
+        Syntax:
+        { $match: { field: value } }
+
+
+        Example:
+        db.orders.aggregate([
+        { $match: { orderStatus: "Delivered" } }
+        ])
+
+
+        Use case: Find only delivered orders.
+    2. $project — Select or reshape fields
+        Why: To control which fields appear in the output or create calculated fields.
+
+        Syntax:
+        { $project: { field1: 1, field2: 1, _id: 0 } }
+
+
+        Example:
+        db.orders.aggregate([
+        { $project: { orderId: 1, totalAmount: 1, _id: 0 } }
+        ])
+
+
+        Use case: Display only the order ID and amount in a sales report.
+        - 1 includes a field.
+        - 0 excludes a field.
+        - You generally cannot mix inclusion and exclusion in the same projection, except for _id.
+
+    3. $set — Add or update fields
+        Why: To create a new field or calculate a new value using existing fields.
+
+        Syntax:
+        { $set: { newField: expression } }
+
+
+        Example:
+        db.orders.aggregate([
+        { $set: { deliveryMessage: "Order processed" } }
+        ])
+
+
+        Use case: Add a temporary display message to each order in the output.
+
+        The original collection is not modified by this stage alone.
+
+    4. $addFields — Add fields while retaining existing fields
+        Why: To add calculated or constant fields without removing other fields.
+
+        Syntax:
+        { $addFields: { newField: expression } }
+
+
+        Example:
+        db.orders.aggregate([
+        { $addFields: { discountAmount: 500 } }
+        ])
+
+
+        Use case: Add a discount field to orders for a report.
+
+        Remember: $addFields and $set are aliases in aggregation. They work the same way.
+
+    5. $unset — Remove fields
+        Why: To hide unwanted or unnecessary fields from aggregation results.
+
+        Syntax:
+        { $unset: "fieldName" }
+
+
+        For multiple fields:
+        { $unset: ["paymentMethod", "paymentStatus"] }
+
+
+        Example:
+        db.orders.aggregate([
+        { $unset: "paymentMethod" }
+        ])
+
+
+        Use case: Remove payment details from a report that does not need them. This does not delete 
+        the field from the stored document.
+
+    6. $sort — Sort documents
+        Why: To arrange documents in ascending or descending order.
+
+        Syntax:
+        { $sort: { fieldName: 1 } }
+
+
+        Example:
+        db.orders.aggregate([
+        { $sort: { totalAmount: -1 } }
+        ])
+
+
+        Use case: Display the highest-value orders first.
+        - 1 — ascending
+        - -1 — descending
+
+    7. $limit — Limit results
+        Why: To return only a specified maximum number of documents.
+
+        Syntax:
+        { $limit: number }
+
+
+        Example:
+        db.orders.aggregate([
+        { $limit: 5 }
+        ])
+
+
+        Use case: Display only five orders.
+
+    8. $skip — Skip documents
+        Why: To skip documents before passing the remaining ones to the next stage.
+
+        Syntax:
+        { $skip: number }
+
+
+        Example:
+        db.orders.aggregate([
+        { $skip: 5 }
+        ])
+
+
+        Use case: Skip the first five results when implementing pagination. Use $sort first when you need 
+        consistent page ordering.
+
+    9. $count — Count documents
+        Why: To count how many documents reach this stage.
+
+        Syntax:
+        { $count: "outputFieldName" }
+
+
+        Example:
+        db.orders.aggregate([
+        { $match: { orderStatus: "Delivered" } },
+        { $count: "deliveredCount" }
+        ])
+
+
+        Use case: Find how many orders have been delivered.
+
+        The output looks like:
+        { deliveredCount: 8 }
+
+
+        The number is illustrative; your actual result depends on your dataset. If no documents reach $count, it 
+        produces no result document.
+
+    10. $sample — Select random documents
+        Why: To retrieve a random selection of documents.
+
+        Syntax:
+        { $sample: { size: number } }
+
+
+        Example:
+        db.orders.aggregate([
+        { $sample: { size: 3 } }
+        ])
+
+
+        Use case: Select three random orders for testing or manual inspection. The results may differ between 
+        executions.
+
+    11. $unwind — Separate array elements
+        Why: To turn each array element into a separate output document.
+
+        Syntax:
+        { $unwind: "$arrayField" }
+
+
+        Example:
+        db.orders.aggregate([
+        { $unwind: "$items" }
+        ])
+
+
+        Use case: Analyze individual products within orders.
+
+        If an order contains an iPhone and AirPods in its items array, $unwind produces two output documents for that 
+        order, one per item.
+
+        Optional syntax:
+        {
+        $unwind: {
+            path: "$items",
+            preserveNullAndEmptyArrays: true
+        }
+        }
+
+
+        This option retains documents where items is missing, null, or empty.
+
+    12. $group — Group documents and calculate values
+        Why: To combine documents based on a common value and perform calculations.
+
+        Syntax:
+        {
+        $group: {
+            _id: "$fieldName",
+            result: { $sum: "$numericField" }
+        }
+        }
+
+
+        Example 1: Count orders by status
+        db.orders.aggregate([
+        {
+            $group: {
+            _id: "$orderStatus",
+            totalOrders: { $sum: 1 }
+            }
+        }
+        ])
+
+
+        Use case: Find the number of delivered, pending, and cancelled orders.
+
+        Example 2: Calculate total sales
+        db.orders.aggregate([
+        {
+            $group: {
+            _id: null,
+            totalSales: { $sum: "$totalAmount" }
+            }
+        }
+        ])
+
+
+        Use case: Calculate total sales across all orders.
+
+        Important parts:
+        - _id: "$orderStatus" groups documents by status.
+        - _id: null puts all documents into one group.
+        - $sum: 1 counts documents.
+        - $sum: "$totalAmount" adds the amount field from each document.
+        Other common accumulators include $avg, $min, $max, and $push.

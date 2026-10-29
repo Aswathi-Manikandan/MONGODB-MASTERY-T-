@@ -1,0 +1,73 @@
+Projection in MongoDB :
+    Projection controls which fields are included or excluded in the query result.  
+        db.students.find(
+        {},
+        { name: 1, age: 1 }
+        )
+
+$slice projection :
+    $slice projection returns only a specified number of elements from an array field 
+    instead of returning the entire array.
+    db.students.find(
+    { name: "Arun" },
+    { skills: { $slice: 2 } }
+    )
+    Returns the first 2 elements of the skills array.
+    ===>-2 returns the last two elements
+
+    Skip elements and return some
+    db.students.find(
+    { name: "Arun" },
+    { skills: { $slice: [2, 3] } }
+    )
+    ===>Skips the first 2 elements and returns the next 3.
+
+$elemMatch Projection :
+    $elemMatch projection returns only the first array element that matches a specified condition.
+    {
+    name: "Arun",
+    marks: [
+        { subject: "Maths", score: 75 },
+        { subject: "Science", score: 90 },
+        { subject: "English", score: 85 }
+    ]
+    }
+    ==>query :
+        db.students.find(
+    { name: "Arun" },
+    { marks: { $elemMatch: { score: { $gt: 80 } } } }
+    )
+    Only the first matching element is returned.
+
+Positional $ Projection
+    Meaning: Positional $ projection returns only the first array element that matches the query condition.
+        db.students.find(
+    { "marks.score": { $gt: 80 } },
+    { "marks.$": 1 }
+    )
+
+
+    Result: Returns only the first matching element.
+
+
+sort()
+    Meaning: sort() arranges query results in ascending or descending order based on one or more fields. 
+    db.students.find().sort({ age: 1 })
+    ==>sorting multiple fields
+    db.students.find().sort({
+    age: 1,
+    marks: -1
+    })
+
+limit()
+    Meaning: limit() restricts the number of documents returned by a query.
+    db.students.find().limit(5)
+
+    Returns a maximum of 5 documents.
+
+skip()
+    Meaning: skip() skips a specified number of documents before returning the remaining results.
+    db.students.find().skip(5)
+
+    Skips the first 5 documents and returns the rest.
+

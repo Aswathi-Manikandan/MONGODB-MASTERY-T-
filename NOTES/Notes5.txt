@@ -1,0 +1,213 @@
+Query Operators — Comparison Operators :
+
+    Comparison operators are used to compare field values and find documents that satisfy a condition.
+    Assume the students collection contains fields such as name, age, and marks.
+1. $eq — Equal to
+    Finds documents where the value equals the specified value.
+    db.students.find({ age: { $eq: 20 } })
+
+
+    Finds students whose age is 20.
+2. $ne — Not Equal to
+    db.students.find({ age: { $ne: 20 } })
+
+
+    Finds students whose age is not 20. Documents missing the field may also match.
+3. $gt — Greater Than
+    db.students.find({ marks: { $gt: 80 } })
+
+
+    Finds students with marks greater than 80.
+4. $gte — Greater Than or Equal to
+    db.students.find({ marks: { $gte: 80 } })
+
+
+    Finds students with marks of 80 or above.
+5. $lt — Less Than
+    db.students.find({ age: { $lt: 18 } })
+
+
+    Finds students younger than 18.
+6. $lte — Less Than or Equal to
+    db.students.find({ age: { $lte: 18 } })
+
+
+    Finds students aged 18 or younger.
+7. $in — Matches Any Value
+    Finds documents where the field matches at least one value in the given array.
+    db.students.find({
+    city: { $in: ["Kochi", "Chennai"] }
+    })
+
+
+    Finds students from Kochi or Chennai.
+8. $nin — Matches None of the Values
+    db.students.find({
+    city: { $nin: ["Kochi", "Chennai"] }
+    })
+
+
+    Finds students whose city is neither Kochi nor Chennai. Documents missing the city field may also match
+
+Query Operators — Logical Operators :
+
+    Logical operators combine or reverse query conditions to find matching documents.
+1. $and
+    Meaning: Matches documents that satisfy all conditions.
+    db.students.find({
+    $and: [
+        { age: { $gte: 18 } },
+        { marks: { $gt: 80 } }
+    ]
+    })
+
+
+    Finds students aged 18 or above and scoring more than 80.
+2. $or
+    Meaning: Matches documents that satisfy at least one condition.
+    db.students.find({
+    $or: [
+        { city: "Kochi" },
+        { marks: { $gt: 90 } }
+    ]
+    })
+
+
+    Finds students from Kochi or students scoring above 90.
+3. $not
+    Meaning: Matches documents where a field does not satisfy the specified condition.
+    db.students.find({
+    age: { $not: { $gt: 18 } }
+    })
+
+
+    Finds students whose age is not greater than 18. Documents missing age may also match.
+4. $nor
+    Meaning: Matches documents that fail all the given conditions.
+    db.students.find({
+    $nor: [
+        { city: "Kochi" },
+        { marks: { $gt: 90 } }
+    ]
+    })
+
+
+    Finds students who are not from Kochi and do not have marks above 90.
+
+Query Operators — Element Operators :
+    Element operators check whether a field exists and whether its value has a particular BSON type.
+1. $exists
+    Meaning: Checks whether a field exists in a document.
+    db.students.find({
+    age: { $exists: true }
+    })
+
+
+    Finds documents that contain the age field.
+    - $exists: true — field exists.
+    - $exists: false — field does not exist.
+2. $type
+    Meaning: Finds documents where a field's value has a specified BSON data type.
+    db.students.find({
+    age: { $type: "string" }
+    })
+
+
+    Finds documents where age contains a string value.
+    Another example:
+    db.students.find({
+    age: { $type: "int" }
+    })
+
+
+    Finds documents where age is a BSON integer.
+
+Query Operators — Evaluation Operators
+    Evaluation operators perform checks or evaluations on field values, expressions, and patterns to find matching documents.
+1. $expr
+    Allows aggregation expressions inside queries.
+    db.products.find({
+    $expr: { $gt: ["$price", "$discount"] }
+    })
+
+
+    Finds products where price is greater than discount.
+2. $jsonSchema
+    Validates documents against a JSON Schema structure.
+    db.students.find({
+    $jsonSchema: {
+        required: ["name", "age"]
+    }
+    })
+
+
+    Finds documents containing both name and age.
+3. $mod
+    Matches numbers that produce a specified remainder after division.
+    db.students.find({
+    age: { $mod: [2, 0] }
+    })
+
+
+    Finds students whose age is even.
+4. $regex
+    Matches strings against a regular expression pattern.
+    db.students.find({
+    name: { $regex: "^A" }
+    })
+
+
+    Finds names that start with "A".
+5. $text
+    Searches text-indexed fields for specified words.
+    db.articles.createIndex({ content: "text" })
+
+    db.articles.find({
+    $text: { $search: "MongoDB" }
+    })
+
+
+    Finds articles matching the text search.
+6. $where
+    Uses a JavaScript expression or function to select documents.
+    db.students.find({
+    $where: "this.age > 18"
+    })
+
+
+    Finds students older than 18.
+    Note: $where is generally discouraged because it can be slower and has security considerations. Prefer standard query 
+    operators or $expr when possible.
+
+Query Operators — Array Operators:
+    Array query operators help find documents based on array contents, element matches, or array size.
+1. $all
+    Meaning: Matches arrays containing all specified values.
+    db.students.find({
+    skills: { $all: ["React", "Node.js"] }
+    })
+
+
+    Finds students whose skills array contains both "React" and "Node.js".
+2. $elemMatch
+    Meaning: Matches an array containing at least one element that satisfies all specified conditions.
+    db.students.find({
+    marks: {
+        $elemMatch: {
+        subject: "Maths",
+        score: { $gt: 80 }
+        }
+    }
+    })
+
+
+    Finds students with at least one Maths entry where the score is above 80.
+3. $size
+    Meaning: Matches arrays containing an exact number of elements.
+    db.students.find({
+    skills: { $size: 3 }
+    })
+
+
+    Finds students whose skills array contains exactly three elements.
+    Note: $size supports exact array lengths, not ranges such as greater than 3.

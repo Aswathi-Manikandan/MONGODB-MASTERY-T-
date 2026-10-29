@@ -1,0 +1,145 @@
+MongoDB Atlas :
+    MongoDB Atlas is a cloud-based database service that allows us to create, manage, and access MongoDB databases 
+    online without managing the database server ourselves.
+
+    Simply, instead of installing MongoDB and running it on our own computer or server, we can use MongoDB Atlas to 
+    host our database in the cloud.
+
+MongoDB Compass :
+    MongoDB Compass is a graphical user interface (GUI) used to interact with MongoDB databases visually, without writing 
+    queries for every operation.
+
+    Simply, it allows us to view databases, collections, and documents, insert data, update records, delete records, and 
+    run queries through a visual interface
+
+MongoDB Shell (mongosh) :
+    MongoDB Shell (mongosh) is a command-line interface (CLI) that allows us to interact with MongoDB by typing commands.
+
+    Simply, instead of clicking buttons in a graphical tool like MongoDB Compass, we type commands to create databases, 
+    insert documents, retrieve data, update records, and delete records.
+
+How do we create a database in MongoDB? :
+    In MongoDB, we use the use command to select a database. If the database doesn't exist, MongoDB selects it as the current database, but it is created only when we store data in it.
+    Syntax
+    use databaseName
+
+Listing databases :
+    Listing databases means displaying all databases available in your MongoDB server that your user has permission to view.
+    show dbs
+
+Dropping a database :
+    Dropping a database means permanently deleting a database and its collections and documents.
+    db.dropDatabase()
+
+Creating collection :
+    A collection in MongoDB is a group of documents stored inside a database.
+    db.createCollection("collectionName")
+
+Listing collections :   show collections
+
+Dropping collections :
+    Dropping a collection means deleting the entire collection, including all the documents stored inside it.
+    db.collectionName.drop()
+
+renaming a collection :
+    Renaming a collection means changing its existing name without deleting the documents stored inside it.
+    db.oldCollectionName.renameCollection("newCollectionName")
+
+Collection options :
+    Collection options are settings that control how a MongoDB collection is created and behaves.
+        db.createCollection("collectionName", {
+    optionName: value
+    })
+
+Inserting documents :
+    Method 1: insertOne()
+    Use insertOne() when you want to insert one document into a collection.
+    Syntax:
+    db.collectionName.insertOne(document)
+
+    Method 2: insertMany()
+    Use insertMany() when you want to insert multiple documents in one operation.
+    Syntax:
+    db.collectionName.insertMany([
+    document1,
+     document2
+    ])
+
+Nested documents :
+    A nested document is a document stored inside another document as the value of a field.
+    For example, a student has a name and age, and their address contains a city and state. We can store the address as a nested document.
+    {
+    name: "Arun",
+    age: 22,
+    address: {
+        city: "Kochi",
+        state: "Kerala",
+        pincode: 682001
+    }
+    }
+
+    How to retrieve nested fields
+    MongoDB uses dot notation to access fields inside nested documents.
+    Find students from Kochi:
+    db.students.find({
+    "address.city": "Kochi"
+    })
+
+
+    Find students from Kerala:
+    db.students.find({
+    "address.state": "Kerala"
+    })
+
+    How to update a nested field
+    Suppose you want to change Arun's city to Thrissur.
+    db.students.updateOne(
+    { name: "Arun" },
+    { $set: { "address.city": "Thrissur" } }
+    )
+
+Embedded documents :
+    An embedded document is a document stored inside another document in MongoDB rather than being stored as a separate document in another collection.
+    Simply, we store related data together inside a single document.
+
+Automatic vs manual _id :
+    1. What is _id?
+    The _id field is a unique identifier for each document in a MongoDB collection.
+    Every document must have an _id. If you don't provide one, MongoDB automatically generates it.
+    Example:
+    {
+    _id: ObjectId("68f123456789abcdef123456"),
+    name: "Arun",
+    age: 22
+    }
+
+
+    Here, _id uniquely identifies this document.
+2. Automatic _id
+    When you insert a document without specifying _id, MongoDB automatically generates an ObjectId.
+    Example:
+    db.students.insertOne({
+    name: "Arun",
+    age: 22
+    })
+
+3. Manual _id
+    You can provide your own _id value when inserting a document.
+    Example:
+    db.students.insertOne({
+    _id: 101,
+    name: "Arun",
+    age: 22
+    })
+
+Document size limit :
+    In MongoDB, the maximum size of a single BSON document is 16 MiB (mebibytes).
+
+Why does MongoDB have this limit? :
+    The limit helps prevent individual documents from becoming excessively large, which can affect storage, 
+    memory usage, and database operations.
+    For example, storing a student's basic details in one document is reasonable. Storing millions of activity 
+    records inside that same document is usually a poor design
+
+What happens if a document exceeds 16 MiB?
+    MongoDB rejects the document if its BSON representation exceeds the maximum document size.

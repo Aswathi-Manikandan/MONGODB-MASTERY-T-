@@ -1,0 +1,663 @@
+Level 1: MongoDB Fundamentals
+1. What is MongoDB?
+2. What is NoSQL?
+3. SQL vs NoSQL
+4. MongoDB vs MySQL
+5. Advantages and disadvantages of MongoDB
+6. Features of MongoDB
+7. MongoDB use cases
+8. MongoDB architecture basics
+9. Database, collection, and document
+10. JSON vs BSON
+11. MongoDB data types
+12. ObjectId and its structure
+13. _id field
+14. Schema-less vs flexible schema
+15. MongoDB Atlas
+16. MongoDB Compass
+17. MongoDB Shell (mongosh)
+18. MongoDB drivers
+19. MongoDB Community vs Enterprise
+20. MongoDB terminology and definitions
+Level 2: Database, Collection, and Document Operations
+1. Creating a database
+2. Switching databases
+3. Listing databases
+4. Dropping a database
+5. Creating collections
+6. Listing collections
+7. Dropping collections
+8. Renaming collections
+9. Collection options
+10. Inserting documents
+11. Document structure
+12. Nested documents
+13. Arrays inside documents
+14. Embedded documents
+15. Automatic vs manual _id
+16. Duplicate _id errors
+17. Document size limit
+18. Database and collection naming rules
+Level 3: CRUD Operations
+1. What is CRUD?
+2. insertOne()
+3. insertMany()
+4. find()
+5. findOne()
+6. updateOne()
+7. updateMany()
+8. replaceOne()
+9. deleteOne()
+10. deleteMany()
+11. findOneAndUpdate()
+12. findOneAndReplace()
+13. findOneAndDelete()
+14. bulkWrite()
+15. countDocuments()
+16. estimatedDocumentCount()
+17. distinct()
+18. upsert
+21. Matched count vs modified count
+22. Replacement vs update
+
+Level 4: Query Operators — Comparison Operators
+1. $eq
+2. $ne
+3. $gt
+4. $gte
+5. $lt
+6. $lte
+7. $in
+8. $nin
+Level 5: Query Operators — Logical Operators
+1. $and
+2. $or
+3. $not
+4. $nor
+Level 6: Query Operators — Element Operators
+1. $exists
+2. $type
+Level 7: Query Operators — Evaluation Operators
+1. $expr
+2. $jsonSchema
+3. $mod
+4. $regex
+5. $text
+6. $where
+Level 8: Query Operators — Array Operators
+1. $all
+2. $elemMatch
+3. $size
+
+Level 10: Projection, Sorting, and Pagination
+1. Projection in MongoDB
+2. Inclusion vs exclusion projection
+3. Projection with nested fields
+4. Projection with arrays
+5. $slice projection
+6. $elemMatch projection
+7. Positional $ projection
+8. Sorting with sort()
+9. Ascending vs descending sorting
+10. Sorting by multiple fields
+11. limit()
+12. skip()
+13. Pagination
+14. Offset vs cursor-based pagination
+15. Stable sorting and tie-breakers
+16. Cursor basics
+17. hasNext() and next()
+Level 11: Update Operators — Field Operators
+1. $set
+2. $unset
+3. $inc
+4. $mul
+5. $min
+6. $max
+7. $rename
+8. $setOnInsert
+9. $currentDate
+Level 12: Update Operators — Array Operators
+1. $push
+2. $pop
+3. $pull
+4. $pullAll
+5. $addToSet
+6. $each
+7. $position
+8. $slice
+9. $sort
+Level 13: Update Operators — Array Positional Operators
+1. Positional $
+2. All positional $[]
+3. Filtered positional $[identifier]
+4. arrayFilters
+5. Updating nested arrays
+6. Updating objects inside arrays
+7. Updating multiple matching array elements
+Level 14: Update Operators — Bitwise and Other Concepts
+1. $bit
+2. Update with aggregation pipelines
+3. Update operators vs replacement
+4. Nested-field updates
+5. Conditional updates
+6. Atomic updates
+7. Upsert with update operators
+8. Conflicting update paths
+9. Update validation
+Level 15: Aggregation Framework — Basic Stages
+1. What is aggregation?
+2. Aggregation vs find()
+3. Aggregation pipeline
+4. Pipeline execution
+5. $match
+6. $project
+7. $set
+8. $addFields
+9. $unset
+10. $sort
+11. $limit
+12. $skip
+13. $count
+14. $sample
+15. $unwind
+16. $group
+Level 16: Aggregation Framework — Advanced Stages
+1. $lookup
+2. $graphLookup
+3. $facet
+4. $bucket
+5. $bucketAuto
+6. $sortByCount
+7. $replaceRoot
+8. $replaceWith
+9. $unionWith
+10. $merge
+11. $out
+12. $redact
+13. $setWindowFields
+14. $densify
+15. $fill
+16. $documents
+17. $geoNear
+18. $changeStream
+Level 17: Aggregation Operators — Accumulators
+1. $sum
+2. $avg
+3. $min
+4. $max
+5. $first
+6. $last
+7. $firstN
+8. $lastN
+9. $top
+10. $topN
+11. $bottom
+12. $bottomN
+13. $push
+14. $addToSet
+15. $count
+16. $mergeObjects
+17. $stdDevPop
+18. $stdDevSamp
+19. $concatArrays where supported as an accumulator
+Level 18: Aggregation Operators — Arithmetic
+1. $add
+2. $subtract
+3. $multiply
+4. $divide
+5. $mod
+6. $abs
+7. $ceil
+8. $floor
+9. $round
+10. $trunc
+11. $sqrt
+12. $pow
+13. $exp
+14. $log
+15. $log10
+16. $ln
+Level 19: Aggregation Operators — String
+1. $concat
+2. $toLower
+3. $toUpper
+4. $trim
+5. $ltrim
+6. $rtrim
+7. $split
+8. $substr
+9. $substrBytes
+10. $substrCP
+11. $strLenBytes
+12. $strLenCP
+13. $indexOfBytes
+14. $indexOfCP
+15. $replaceOne
+16. $replaceAll
+17. $regexMatch
+18. $regexFind
+19. $regexFindAll
+20. $strcasecmp
+21. $toString
+Level 20: Aggregation Operators — Array
+1. $arrayElemAt
+2. $arrayToObject
+3. $objectToArray
+4. $concatArrays
+5. $filter
+6. $first
+7. $last
+8. $in
+9. $indexOfArray
+10. $isArray
+11. $map
+12. $range
+13. $reduce
+14. $reverseArray
+15. $size
+16. $slice
+17. $sortArray
+18. $zip
+19. $maxN
+20. $minN
+Level 21: Aggregation Operators — Conditional and Comparison
+1. $cond
+2. $ifNull
+3. $switch
+4. $and
+5. $or
+6. $not
+7. $cmp
+8. $eq
+9. $ne
+10. $gt
+11. $gte
+12. $lt
+13. $lte
+14. $in
+15. $isNumber
+16. $type
+17. $convert
+18. $toInt
+19. $toLong
+20. $toDouble
+21. $toDecimal
+22. $toBool
+23. $toDate
+24. $toObjectId
+Level 22: Aggregation Operators — Date and Time
+1. $dateAdd
+2. $dateSubtract
+3. $dateDiff
+4. $dateTrunc
+5. $dateToString
+6. $dateFromString
+7. $dateFromParts
+8. $dateToParts
+9. $dayOfMonth
+10. $dayOfWeek
+11. $dayOfYear
+12. $month
+13. $year
+14. $hour
+15. $minute
+16. $second
+17. $millisecond
+18. $week
+19. $isoWeek
+20. $isoWeekYear
+21. $isoDayOfWeek
+22. $dateToParts
+23. Time zones and UTC handling
+Level 23: Aggregation Operators — Object, Set, and Other Expressions
+1. $mergeObjects
+2. $getField
+3. $setField
+4. $literal
+5. $let
+6. $map
+7. $allElementsTrue
+8. $anyElementTrue
+9. $setEquals
+10. $setIntersection
+11. $setUnion
+12. $setDifference
+13. $setIsSubset
+14. $rand
+15. $function
+16. $accumulator
+17. $meta
+18. $bsonSize
+19. $binarySize
+20. $type
+Level 24: Indexing
+1. What is an index?
+2. Why indexes are needed
+3. How indexes work
+4. createIndex()
+5. getIndexes()
+6. dropIndex()
+7. dropIndexes()
+8. Single-field index
+9. Compound index
+10. Multikey index
+11. Unique index
+12. Partial index
+13. Sparse index
+14. TTL index
+15. Text index
+16. Geospatial index
+17. Hashed index
+18. Wildcard index
+19. Hidden index
+20. Clustered index concepts
+21. Compound index field order
+22. Compound index prefixes
+23. ESR guideline
+24. Covered queries
+25. Index selectivity
+26. Index intersection
+27. Index usage and performance
+28. Index limitations
+29. Index overhead
+30. explain() and index analysis
+Level 25: Data Modeling and Schema Design
+1. Schema design fundamentals
+2. Flexible schema
+3. Embedding vs referencing
+4. One-to-one relationships
+5. One-to-many relationships
+6. Many-to-many relationships
+7. Nested documents
+8. Arrays of embedded documents
+9. Data duplication
+10. Normalization vs denormalization
+11. Unbounded arrays
+12. Schema validation
+13. $jsonSchema validation
+14. Validation rules
+15. Validation levels and actions
+16. Schema evolution
+17. Polymorphic pattern
+18. Attribute pattern
+19. Bucket pattern
+20. Subset pattern
+21. Computed pattern
+22. Extended reference pattern
+23. Outlier pattern
+24. E-commerce schema design
+25. User and order schema design
+Level 26: Relationships and Joins
+1. Embedding vs referencing
+2. Manual references
+3. DBRefs
+4. $lookup
+5. $lookup with pipelines
+6. Correlated and uncorrelated joins
+7. $unwind with $lookup
+8. $graphLookup
+9. Recursive relationships
+10. Parent-child relationships
+11. Self-referencing documents
+12. Referential integrity
+13. Cascading deletes
+14. Join performance
+15. When to use joins in MongoDB
+Level 27: Transactions and Atomicity
+1. What is a transaction?
+2. ACID properties
+3. Single-document atomicity
+4. Multi-document transactions
+5. Transaction sessions
+6. Starting and committing transactions
+7. Aborting transactions
+8. Read concern in transactions
+9. Write concern in transactions
+10. Transaction isolation
+11. Snapshot read concern
+12. Write conflicts
+13. Transaction retries
+14. Retryable writes
+15. Transaction limitations
+16. Transaction performance
+17. Transactions in replica sets
+18. Transactions in sharded clusters
+19. When to use transactions
+20. When not to use transactions
+Level 28: Replication and Replica Sets
+1. What is replication?
+2. Replica set architecture
+3. Primary and secondary nodes
+4. Arbiter
+5. Oplog
+6. Replication process
+7. Primary elections
+8. Heartbeats
+9. Automatic failover
+10. Replication lag
+11. Initial sync
+12. Rollback
+13. Read preference
+14. Read concern
+15. Write concern
+16. Majority acknowledgment
+17. High availability
+18. Replica set configuration
+19. Hidden and delayed members
+20. Replica set troubleshooting
+Level 29: Sharding
+1. What is sharding?
+2. Horizontal vs vertical scaling
+3. Sharded cluster architecture
+4. Shards
+5. Config servers
+6. mongos
+7. Shard keys
+8. Ranged sharding
+9. Hashed sharding
+10. Zone sharding
+11. Chunks
+12. Balancer
+13. Data distribution
+14. Targeted queries
+15. Scatter-gather queries
+16. Resharding
+17. Shard key selection
+18. Sharding limitations
+19. Sharding and indexes
+20. Sharding and transactions
+21. Sharded cluster performance
+22. Replication vs sharding
+Level 30: Read Concern, Write Concern, and Consistency
+1. Read concern
+2. Local read concern
+3. Available read concern
+4. Majority read concern
+5. Linearizable read concern
+6. Snapshot read concern
+7. Write concern
+8. w: 0
+9. w: 1
+10. w: "majority"
+11. Journal acknowledgment
+12. Read preference modes
+13. Primary vs secondary reads
+14. Eventual consistency
+15. Strong consistency concepts
+16. Causal consistency
+17. Read-your-own-writes
+18. Durability
+19. Consistency vs availability
+20. CAP theorem in MongoDB
+Level 31: Security
+1. Authentication vs authorization
+2. MongoDB users
+3. Built-in roles
+4. Custom roles
+5. Role-based access control
+6. Least privilege principle
+7. Database and collection permissions
+8. SCRAM authentication
+9. X.509 authentication
+10. TLS/SSL
+11. Encryption at rest
+12. Client-side field-level encryption
+13. Queryable Encryption
+14. Network access control
+15. IP access lists
+16. NoSQL injection
+17. Secure connection strings
+18. Secrets management
+19. Auditing
+20. Security best practices
+Level 32: Change Streams and Advanced Features
+1. Change streams
+2. Change events
+3. Resume tokens
+4. Pre-images and post-images
+5. Change stream filtering
+6. Change stream limitations
+7. Views
+8. On-demand materialized views
+9. Time-series collections
+10. Capped collections
+11. Tailable cursors
+12. Geospatial queries
+13. Text search
+14. MongoDB Atlas Search
+15. Vector Search basics
+16. Time-series data modeling
+Level 33: Backup, Restore, and Administration
+1. mongodump
+2. mongorestore
+3. Backup strategies
+4. Logical vs physical backups
+5. Point-in-time recovery
+6. Oplog-based recovery
+7. Restore validation
+8. Disaster recovery
+9. RPO and RTO
+10. Database monitoring
+11. db.stats()
+12. db.collection.stats()
+13. db.serverStatus()
+14. db.currentOp()
+15. explain()
+16. MongoDB logs
+17. Slow query profiling
+18. Performance troubleshooting
+19. Database upgrades
+20. Production best practices
+Level 34: MongoDB with Node.js and Mongoose
+1. MongoDB Node.js driver
+2. MongoDB driver vs Mongoose
+3. What is an ODM?
+4. Mongoose architecture
+5. Schemas and models
+6. Schema types
+7. Model methods
+8. CRUD operations with Mongoose
+9. Validation
+10. Custom validators
+11. Middleware and hooks
+12. Instance methods
+13. Static methods
+14. Virtuals
+15. Population
+16. References
+17. Subdocuments
+18. Discriminators
+19. Query building
+20. Lean queries
+21. Aggregation with Mongoose
+22. Indexes in Mongoose
+23. Transactions with Mongoose
+24. Error handling
+25. Connection pooling
+26. Pagination
+27. Mongoose vs native driver
+28. Common Mongoose interview questions
+Level 35: MongoDB Performance and Troubleshooting
+1. Query optimization
+2. Collection scans vs index scans
+3. explain() output
+4. Query planner
+5. Query plan cache
+6. Slow queries
+7. Index optimization
+8. Aggregation optimization
+9. Memory and disk usage
+10. Connection pooling
+11. Replication lag
+12. Locking and concurrency basics
+13. Write conflicts
+14. Pagination performance
+15. Bulk write performance
+16. Transactions and performance
+17. Common production errors
+18. Duplicate key errors
+19. Schema validation errors
+20. Performance troubleshooting scenarios
+Level 36: Frequently Asked Interview Comparisons
+1. MongoDB vs MySQL
+2. SQL vs NoSQL
+3. JSON vs BSON
+4. Database vs collection
+5. find() vs findOne()
+6. updateOne() vs updateMany()
+7. $set vs replaceOne()
+8. deleteOne() vs deleteMany()
+9. $in vs $all
+10. $or vs $and
+11. $set vs $addToSet
+12. $push vs $addToSet
+13. $pull vs $pop
+14. $unset vs deleteOne()
+15. countDocuments() vs estimatedDocumentCount()
+16. $match vs find()
+17. $project vs $set
+18. $group vs distinct()
+19. $lookup vs embedding
+20. Embedding vs referencing
+21. Index scan vs collection scan
+22. Single-field vs compound index
+23. Unique vs sparse index
+24. Sparse vs partial index
+25. Replica set vs sharding
+26. Replication vs backup
+27. Read concern vs write concern
+28. Atomicity vs transaction
+29. Native driver vs Mongoose
+30. find() vs aggregation
+31. skip() vs cursor-based pagination
+32. $unwind vs $map
+33. $filter vs $elemMatch
+34. $addFields vs $project
+35. $merge vs $out
+Level 37: Scenario-Based Interview Questions
+1. Find duplicate documents.
+2. Find the second-highest salary.
+3. Find the highest salary in each department.
+4. Find duplicate values in a field.
+5. Find documents with missing fields.
+6. Find documents with null values.
+7. Update nested objects.
+8. Update a specific array element.
+9. Remove duplicates from an array.
+10. Find documents containing all specified array values.
+11. Join two collections.
+12. Calculate totals using aggregation.
+13. Group documents by category.
+14. Find the top N records.
+15. Implement pagination.
+16. Design a users and orders database.
+17. Design an e-commerce database.
+18. Choose indexes for a slow query.
+19. Prevent duplicate records.
+20. Handle concurrent updates.
+21. Design a high-availability database.
+22. Choose a shard key.
+23. Recover deleted data.
+24. Troubleshoot replication lag.
+25. Optimize a slow aggregation pipeline.

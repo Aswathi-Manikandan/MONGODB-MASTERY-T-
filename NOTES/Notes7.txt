@@ -1,0 +1,135 @@
+Update Operators — Field Operators :
+    1. $set
+        Purpose: Sets a field's value.
+
+        Syntax:
+        { $set: { field: value } }
+
+
+        Example:
+        db.students.updateOne(
+        { name: "Arun" },
+        { $set: { age: 23 } }
+        )
+
+
+    2. $unset
+        Purpose: Removes a field.
+
+        Syntax:
+        { $unset: { field: "" } }
+
+
+        Example:
+        db.students.updateOne(
+        { name: "Arun" },
+        { $unset: { age: "" } }
+        )
+
+
+    3. $inc
+        Purpose: Increases or decreases a numeric value.
+
+        Syntax:
+        { $inc: { field: number } }
+
+
+        Example:
+        db.students.updateOne(
+        { name: "Arun" },
+        { $inc: { marks: 5 } }
+        )
+
+
+    4. $mul
+        Purpose: Multiplies a numeric value.
+
+        Syntax:
+        { $mul: { field: number } }
+
+
+        Example:
+        db.students.updateOne(
+        { name: "Arun" },
+        { $mul: { marks: 2 } }
+        )
+
+
+    5. $min
+        Purpose: Updates the field only if the new value is smaller.
+
+        Syntax:
+        { $min: { field: value } }
+
+
+        Example:
+        db.students.updateOne(
+        { name: "Arun" },
+        { $min: { marks: 40 } }
+        )
+
+
+    6. $max
+        Purpose: Updates the field only if the new value is larger.
+
+        Syntax:
+        { $max: { field: value } }
+
+
+        Example:
+        db.students.updateOne(
+        { name: "Arun" },
+        { $max: { marks: 90 } }
+        )
+
+
+    7. $rename
+        Purpose: Renames a field.
+
+        Syntax:
+        { $rename: { oldField: "newField" } }
+
+
+        Example:
+        db.students.updateOne(
+        { name: "Arun" },
+        { $rename: { course: "program" } }
+        )
+
+
+    8. $setOnInsert
+        Purpose: Sets values only when an upsert inserts a new document.
+
+        Syntax:
+        {
+        $setOnInsert: { field: value }
+        }
+
+
+        Example:
+        db.students.updateOne(
+        { name: "Arun" },
+        {
+            $set: { age: 23 },
+            $setOnInsert: { course: "MERN" }
+        },
+        { upsert: true }
+        )
+
+
+    9. $currentDate
+        Purpose: Sets a field to the current date or timestamp.
+
+        Syntax:
+        { $currentDate: { field: true } }
+
+
+        Example:
+        db.students.updateOne(
+        { name: "Arun" },
+        { $currentDate: { lastUpdated: true } }
+        )
+
+
+        To store a BSON timestamp instead of a date:
+        { $currentDate: { lastUpdated: { $type: "timestamp" } } }

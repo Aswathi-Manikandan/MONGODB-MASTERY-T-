@@ -1,0 +1,32 @@
+What is a transaction?
+    A transaction is a group of database operations that are treated as one unit. Either all operations succeed, or none of them are applied.
+
+    Transactions are useful when multiple operations must succeed together to keep data consistent.
+
+ACID properties :
+    ACID represents four properties that help ensure reliable database transactions: Atomicity, Consistency, 
+    Isolation, and Durability.
+
+    1. Atomicity — All operations succeed or none do
+        Theory: A transaction is treated as one unit. If one operation fails, the other operations in that transaction 
+        are rolled back.
+
+        MongoDB example: When placing an order, we want to:
+        1. Insert a new order into orders.
+        2. Reduce the product stock in products.
+        If an operation fails, the transaction can be aborted so the order insertion and stock update are not 
+        partially committed. This example illustrates the concept; production code should also verify that the 
+        stock update actually matched a document.
+
+    2. Consistency — Data follows rules
+        Theory: A transaction must take the database from one valid state to another, maintaining defined rules.
+    
+        The filter allows the update only when at least one item is available. This helps maintain the stock rule.
+
+    3. Isolation — Concurrent operations are handled safely
+        Theory: Multiple transactions may run at the same time, but MongoDB provides isolation and conflict handling 
+        so they do not improperly interfere with each other.
+
+    4. Durability — Committed changes persist
+        Theory: Once a transaction is committed successfully, its changes persist according to MongoDB's durability 
+        guarantees and write concern.

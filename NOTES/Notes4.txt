@@ -1,0 +1,471 @@
+What is CRUD? 
+    CRUD stands for Create, Read, Update, and Delete. These are the four basic operations used to manage data in a database.
+
+Important CRUD methods
+
+              Operation	                MongoDB methods
+                Create	            insertOne(), insertMany()
+                Read	            find(), findOne()
+                Update	            updateOne(), updateMany(), replaceOne()
+                Delete	            deleteOne(), deleteMany()
+
+What is find()?
+    The find() method is used to retrieve documents from a collection that match a specified condition.
+    Syntax:
+    db.collectionName.find(query)
+What is findOne()?
+    The findOne() method retrieves only one matching document from a collection.
+    Syntax:
+    db.collectionName.findOne(query)
+
+What is updateOne()?
+    The updateOne() method updates only the first document that matches the specified filter.
+    Syntax
+    db.collectionName.updateOne(
+    { condition },
+    { $set: { field: value } }
+    )
+What is updateMany()?
+    The updateMany() method updates all documents that match the specified filter.
+    Syntax
+    db.collectionName.updateMany(
+    { condition },
+    { $set: { field: value } }
+    )
+
+Update Operators — Field Operators :
+    Field update operators are special operators used to modify specific fields in a MongoDB 
+    document without replacing the entire document.
+
+    s
+1. $set — Set or change a field value
+    Use $set to assign a new value to a field. If the field doesn't exist, MongoDB creates it.
+    db.students.updateOne(
+    { name: "Arun" },
+    { $set: { age: 23 } }
+    )
+
+
+    Result: Arun's age becomes 23.
+    You can also add a new field:
+    db.students.updateOne(
+    { name: "Arun" },
+    { $set: { city: "Kochi" } }
+    )
+
+
+    Now the document also contains city: "Kochi".
+
+2. $unset — Remove a field
+    Use $unset to remove a field from a document.
+    db.students.updateOne(
+    { name: "Arun" },
+    { $unset: { city: "" } }
+    )
+
+
+    Result: The city field is removed.
+    Remember: $unset removes the field, not just its value.
+
+3. $inc — Increment or decrement a number
+    Use $inc to increase or decrease a numeric field.
+    db.students.updateOne(
+    { name: "Arun" },
+    { $inc: { age: 1 } }
+    )
+
+
+    If the age is 22, it becomes 23.
+    To decrease the age by 1:
+    db.students.updateOne(
+    { name: "Arun" },
+    { $inc: { age: -1 } }
+    )
+
+
+    If the age is 22, it becomes 21.
+    If the field doesn't exist, $inc creates it with the specified value. The existing field must be numeric or the operation fails.
+
+4. $mul — Multiply a numeric field
+    Use $mul to multiply a field's current value by a number.
+    db.products.updateOne(
+    { name: "Laptop" },
+    { $mul: { price: 2 } }
+    )
+
+
+    If the price is 500, the new price becomes 1000.
+    If the field doesn't exist, $mul creates it with a value of 0.
+
+5. $min — Update only if the new value is smaller
+    Use $min to replace a field's value only when the specified value is less than the current value.
+    db.students.updateOne(
+    { name: "Arun" },
+    { $min: { score: 50 } }
+    )
+
+
+    If the current score is 70, it becomes 50.
+    If the current score is 40, it remains 40.
+
+6. $max — Update only if the new value is greater
+    Use $max to replace a field's value only when the specified value is greater than the current value.
+    db.students.updateOne(
+    { name: "Arun" },
+    { $max: { score: 90 } }
+    )
+
+
+    If the current score is 70, it becomes 90.
+    If the current score is 95, it remains 95.
+
+7. $rename — Rename a field
+    Use $rename to change a field's name.
+    db.students.updateOne(
+    { name: "Arun" },
+    { $rename: { name: "fullName" } }
+    )
+
+
+    The field name becomes fullName, preserving its value.
+
+8.$setOnInsert
+    Meaning: Sets a field's value only when a new document is inserted during an upsert operation.
+    Example:
+    db.students.updateOne(
+    { name: "Arun" },
+    {
+        $set: { age: 23 },
+        $setOnInsert: { course: "MERN" }
+    },
+    { upsert: true }
+    )
+
+
+    - If Arun exists, only age is updated.
+    - If Arun doesn't exist, a new document is inserted with age and course.
+    Interview answer: $setOnInsert sets values only when an upsert creates a new document.
+
+9. $currentDate
+    Meaning: Sets a field to the current date and time when the update occurs.
+    Example:
+    db.students.updateOne(
+    { name: "Arun" },
+    {
+        $currentDate: { lastUpdated: true }
+    }
+    )
+
+
+    This adds or updates the lastUpdated field with the current date and time.
+
+Update Operators — Array Operators : 
+
+    Array update operators are used to add, remove, or modify elements inside an array field.
+1. $push
+    Meaning: Adds an element to an array.
+    db.students.updateOne(
+    { name: "Arun" },
+    { $push: { skills: "React" } }
+    )
+
+
+    Adds "React" to the skills array.
+2. $each
+    Meaning: Adds multiple elements to an array using $push or $addToSet.
+    db.students.updateOne(
+    { name: "Arun" },
+    { $push: { skills: { $each: ["Node.js", "MongoDB"] } } }
+    )
+
+
+    Adds both skills to the array.
+3. $addToSet
+    Meaning: Adds an element only if it does not already exist in the array.
+    db.students.updateOne(
+    { name: "Arun" },
+    { $addToSet: { skills: "React" } }
+    )
+
+
+    Prevents adding a duplicate "React" value.
+4. $pop
+    Meaning: Removes the first or last element from an array.
+    db.students.updateOne(
+    { name: "Arun" },
+    { $pop: { skills: 1 } }
+    )
+
+
+    - 1 — removes the last element.
+    - -1 — removes the first element.
+5. $pull
+    Meaning: Removes all array elements that match a specified value or condition.
+    db.students.updateOne(
+    { name: "Arun" },
+    { $pull: { skills: "React" } }
+    )
+
+
+    Removes every "React" element from the skills array.
+6. $pullAll
+    Meaning: Removes all occurrences of the specified values from an array.
+    db.students.updateOne(
+    { name: "Arun" },
+    { $pullAll: { skills: ["React", "Node.js"] } }
+    )
+
+
+    Removes "React" and "Node.js" from the array.
+7. $
+    Meaning: Updates the first array element that matches the query condition.
+    db.students.updateOne(
+    { name: "Arun", "marks.subject": "Maths" },
+    { $set: { "marks.$.score": 95 } }
+    )
+
+
+    Updates the score of the first matching Maths element.
+8. $[]
+    Meaning: Updates all elements in an array.
+    db.students.updateOne(
+    { name: "Arun" },
+    { $set: { "marks.$[].status": "Checked" } }
+    )
+
+
+    Sets the status of every element in marks to "Checked".
+9. $[identifier]
+    Meaning: Updates only the array elements that match a specified filter.
+    db.students.updateOne(
+    { name: "Arun" },
+    { $set: { "marks.$[m].score": 100 } },
+    { arrayFilters: [{ "m.subject": "Maths" }] }
+    )
+
+
+    Updates the score of every Maths element to 100.
+
+10.$position
+    Meaning: Specifies the index where new elements should be inserted using $push with $each.
+    db.students.updateOne(
+    { name: "Arun" },
+    {
+        $push: {
+        skills: {
+            $each: ["React"],
+            $position: 0
+        }
+        }
+    }
+    )
+
+
+    Result: "React" is inserted at the beginning of the array.
+11. $slice
+    Meaning: Limits the number of elements retained in an array when used with $push.
+    db.students.updateOne(
+    { name: "Arun" },
+    {
+        $push: {
+        scores: {
+            $each: [90, 95],
+            $slice: -3
+        }
+        }
+    }
+    )
+
+
+    Result: Keeps only the last 3 elements in the scores array.
+    - $slice: 3 — keeps the first 3 elements.
+    - $slice: -3 — keeps the last 3 elements.
+12. $sort
+    Meaning: Sorts array elements when used with $push and $each.
+    db.students.updateOne(
+    { name: "Arun" },
+    {
+        $push: {
+        scores: {
+            $each: [85, 95],
+            $sort: 1
+        }
+        }
+    }
+    )
+
+
+    Result: Sorts the scores array in ascending order.
+    - $sort: 1 — ascending order.
+    - $sort: -1 — descending order.
+
+replaceOne() :
+    replaceOne() replaces an entire existing document with a new document, except for the immutable _id field.
+    Syntax
+    db.collection.replaceOne(
+    { filter },
+    { replacement }
+    )
+
+
+    Example
+    db.students.replaceOne(
+    { name: "Arun" },
+    {
+        name: "Arun",
+        age: 23,
+        course: "MERN"
+    }
+    )
+
+
+    If the original document is:
+    { _id: 1, name: "Arun", age: 22, city: "Kochi" }
+
+
+    After replacement:
+    { _id: 1, name: "Arun", age: 23, course: "MERN" }
+
+
+    Notice: The city field is removed because replaceOne() replaces the whole document rather than updating individual fields.
+
+deleteOne() :
+    Meaning: Deletes the first document that matches the given condition.
+    db.students.deleteOne(
+    { name: "Arun" }
+    )
+
+
+    Deletes only the first document where name is "Arun".
+deleteMany() :
+    Meaning: Deletes all documents that match the given condition.
+    db.students.deleteMany(
+    { age: 20 }
+    )
+
+
+    Deletes every document where age is 20.
+
+findOneAndUpdate() :
+    Meaning: Finds one document and updates specified fields. By default, it returns the document before the update.
+    db.students.findOneAndUpdate(
+    { name: "Arun" },
+    { $set: { age: 25 } },
+    { returnDocument: "after" }
+    )
+
+
+    Updates Arun's age to 25 and returns the updated document.
+findOneAndReplace() :
+    Meaning: Finds one document and replaces the entire document, except for its immutable _id.
+    db.students.findOneAndReplace(
+    { name: "Arun" },
+    { name: "Arun", age: 25, course: "MERN" },
+    { returnDocument: "after" }
+    )
+
+
+    Replaces the matching document with the new document and returns the replacement.
+findOneAndDelete() :
+    Meaning: Finds and deletes one matching document, returning the deleted document.
+    db.students.findOneAndDelete(
+    { name: "Arun" }
+    )
+
+
+    Deletes the first matching document and returns its previous contents.
+
+bulkWrite() :
+`    bulkWrite() performs multiple write operations in a single method call, such as insert, update, replace, and delete.
+    Syntax
+    db.collection.bulkWrite([
+    { operation: { /* details */ } }
+    ])
+
+
+    Example
+    db.students.bulkWrite([
+    {
+        insertOne: {
+        document: { name: "Arun", age: 22 }
+        }
+    },
+    {
+        updateOne: {
+        filter: { name: "Priya" },
+        update: { $set: { age: 24 } }
+        }
+    },
+    {
+        deleteOne: {
+        filter: { name: "Ravi" }
+        }
+    }
+    ])
+
+
+    This performs three operations:
+    - insertOne — inserts Arun's document.
+    - updateOne — updates Priya's age.
+    - deleteOne — deletes the first matching Ravi document.`
+
+countDocuments() :
+    countDocuments() returns the number of documents that match a specified condition.
+    Syntax
+    db.collection.countDocuments({ filter })
+
+estimatedDocumentCount() :
+    estimatedDocumentCount() returns an estimate of the total number of documents in a collection using collection metadata.
+    Syntax
+    db.students.estimatedDocumentCount()
+    Returns the estimated total number of documents in the students collection
+
+ distinct() :
+    distinct() returns an array of unique values for a specified field, removing duplicates.
+    Syntax
+    db.collection.distinct("fieldName")
+
+upsert:
+    upsert means update + insert. If a matching document exists, MongoDB updates it. If no matching document exists, MongoDB inserts a new document.
+    Example
+    db.students.updateOne(
+    { name: "Arun" },
+    { $set: { age: 23 } },
+    { upsert: true }
+    )
+
+
+    Case 1: Arun exists → updates his age to 23.
+    Case 2: Arun does not exist → inserts a new document:
+    {
+    name: "Arun",
+    age: 23
+    }
+
+
+    Important points
+    - upsert is an option, not a standalone method.
+    - It works with methods such as updateOne(), updateMany(), replaceOne(), and findOneAndUpdate().
+    - By default, upsert is false.
+
+Matched count vs modified count :
+    - matchedCount — Number of documents that matched the filter.
+    - modifiedCount — Number of documents that were actually changed.
+    Example
+    db.students.updateMany(
+    { age: 20 },
+    { $set: { city: "Kochi" } }
+    )
+
+
+    Suppose 5 documents have age: 20, but 2 already have city: "Kochi".
+    Result:
+    {
+    matchedCount: 5,
+    modifiedCount: 3
+    }
+
+Replacement vs update :
+    Update: Modifies specific fields in an existing document without removing other fields.
+    Replacement: Replaces the entire document with a new document, except for the immutable _id field.
+

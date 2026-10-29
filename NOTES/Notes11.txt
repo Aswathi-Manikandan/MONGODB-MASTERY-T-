@@ -1,0 +1,210 @@
+Aggregation Operators — Accumulators
+    1. $sum — Calculate total
+Why use it? To add numeric values or count documents.
+
+Syntax:
+{ $sum: "$fieldName" }
+
+
+Example:
+db.orders.aggregate([
+  {
+    $group: {
+      _id: "$orderStatus",
+      totalSales: { $sum: "$totalAmount" }
+    }
+  }
+])
+
+
+Use case: Calculate total sales for each order status.
+
+To count documents, use { $sum: 1 }.
+2. $avg — Calculate average
+Why use it? To find the average of numeric values.
+
+Syntax:
+{ $avg: "$fieldName" }
+
+
+Example:
+db.orders.aggregate([
+  {
+    $group: {
+      _id: null,
+      averageOrderValue: { $avg: "$totalAmount" }
+    }
+  }
+])
+
+
+Use case: Find the average order amount across all orders.
+3. $min — Find the minimum
+Why use it? To find the smallest value in a group.
+
+Syntax:
+{ $min: "$fieldName" }
+
+
+Example:
+db.orders.aggregate([
+  {
+    $group: {
+      _id: null,
+      lowestOrder: { $min: "$totalAmount" }
+    }
+  }
+])
+
+
+Use case: Find the lowest order amount.
+4. $max — Find the maximum
+Why use it? To find the largest value in a group.
+
+Syntax:
+{ $max: "$fieldName" }
+
+
+Example:
+db.orders.aggregate([
+  {
+    $group: {
+      _id: null,
+      highestOrder: { $max: "$totalAmount" }
+    }
+  }
+])
+
+
+Use case: Find the highest order amount.
+5. $first — Get the first value
+Why use it? To retrieve a value from the first document in a group. Sort first when you need a meaningful order.
+
+Syntax:
+{ $first: "$fieldName" }
+
+
+Example:
+db.orders.aggregate([
+  { $sort: { orderDate: 1 } },
+  {
+    $group: {
+      _id: "$customer.city",
+      firstOrder: { $first: "$orderId" }
+    }
+  }
+])
+
+
+Use case: Find the earliest order in each customer city.
+6. $last — Get the last value
+Why use it? To retrieve a value from the last document in a group.
+
+Syntax:
+{ $last: "$fieldName" }
+
+
+Example:
+db.orders.aggregate([
+  { $sort: { orderDate: 1 } },
+  {
+    $group: {
+      _id: "$customer.city",
+      lastOrder: { $last: "$orderId" }
+    }
+  }
+])
+
+
+Use case: Find the latest order in each city, assuming orderDate determines the ordering. Add a secondary sort field to break ties when necessary.
+7. $firstN — Get the first N values
+Why use it? To return multiple values from the beginning of each group.
+
+Syntax:
+{
+  $firstN: {
+    n: number,
+    input: "$fieldName"
+  }
+}
+
+
+Example:
+db.orders.aggregate([
+  { $sort: { orderDate: 1 } },
+  {
+    $group: {
+      _id: "$customer.city",
+      firstThreeOrders: {
+        $firstN: {
+          n: 3,
+          input: "$orderId"
+        }
+      }
+    }
+  }
+])
+
+
+Use case: Get the first three orders for each city in ascending date order.
+8. $lastN — Get the last N values
+Why use it? To return multiple values from the end of each group.
+
+Syntax:
+{
+  $lastN: {
+    n: number,
+    input: "$fieldName"
+  }
+}
+
+
+Example:
+db.orders.aggregate([
+  { $sort: { orderDate: 1 } },
+  {
+    $group: {
+      _id: "$customer.city",
+      lastThreeOrders: {
+        $lastN: {
+          n: 3,
+          input: "$orderId"
+        }
+      }
+    }
+  }
+])
+
+
+Use case: Get the latest three orders for each city.
+9. $top — Get the top document's value
+Why use it? To retrieve a value from the document ranked highest or lowest according to your chosen sort order.
+
+Syntax:
+{
+  $top: {
+    sortBy: { fieldName: -1 },
+    output: "$fieldName"
+  }
+}
+
+
+Example:
+db.orders.aggregate([
+  {
+    $group: {
+      _id: "$customer.city",
+      highestOrder: {
+        $top: {
+          sortBy: { totalAmount: -1 },
+          output: "$orderId"
+        }
+      }
+    }
+  }
+])
+
+
+Use case: Find the order with the highest amount in each city.
+
+Here, -1 sorts from highest to lowest. Use 1 for lowest to highest.
